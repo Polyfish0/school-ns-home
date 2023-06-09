@@ -12,19 +12,23 @@ public class Treatment {
     private LocalTime end;
     private String description;
     private String remarks;
+    private String caregiver;
+    private String telephone;
 
     public Treatment(long pid, LocalDate date, LocalTime begin,
-                     LocalTime end, String description, String remarks) {
+                     LocalTime end, String description, String remarks, String caregiver, String telephone) {
         this.pid = pid;
         this.date = date;
         this.begin = begin;
         this.end = end;
         this.description = description;
         this.remarks = remarks;
+        this.caregiver = caregiver;
+        this.telephone = telephone;
     }
 
     public Treatment(long tid, long pid, LocalDate date, LocalTime begin,
-                     LocalTime end, String description, String remarks) {
+                     LocalTime end, String description, String remarks, String caregiver, String telephone) {
         this.tid = tid;
         this.pid = pid;
         this.date = date;
@@ -32,6 +36,8 @@ public class Treatment {
         this.end = end;
         this.description = description;
         this.remarks = remarks;
+        this.caregiver = caregiver;
+        this.telephone = telephone;
     }
 
     public long getTid() {
@@ -69,6 +75,22 @@ public class Treatment {
         this.end = time;
     }
 
+    public String getCaregiver() {
+        return caregiver;
+    }
+
+    public void setCaregiver(String caregiver) {
+        this.caregiver = caregiver;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -92,6 +114,8 @@ public class Treatment {
                 "\nBegin: " + this.begin +
                 "\nEnd: " + this.end +
                 "\nDescription: " + this.description +
-                "\nRemarks: " + this.remarks + "\n";
+                "\nRemarks: " + this.remarks +
+                "\nCaregiver: " + this.caregiver +
+                "\nTelephone: " + this.telephone + "\n";
     }
 }

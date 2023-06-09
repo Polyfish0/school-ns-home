@@ -29,6 +29,10 @@ public class NewTreatmentController {
     @FXML
     private TextArea taRemarks;
     @FXML
+    private TextField txtCaregiver;
+    @FXML
+    private TextField txtTelephone;
+    @FXML
     private DatePicker datepicker;
 
     private AllTreatmentController controller;
@@ -55,8 +59,10 @@ public class NewTreatmentController {
         LocalTime end = DateConverter.convertStringToLocalTime(txtEnd.getText());
         String description = txtDescription.getText();
         String remarks = taRemarks.getText();
+        String caregiver = txtCaregiver.getText();
+        String telephone = txtTelephone.getText();
         Treatment treatment = new Treatment(patient.getPid(), date,
-                begin, end, description, remarks);
+                begin, end, description, remarks, caregiver, telephone);
         createTreatment(treatment);
         controller.readAllAndShowInTableView();
         stage.close();

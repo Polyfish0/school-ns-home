@@ -26,6 +26,10 @@ public class TreatmentController {
     @FXML
     private TextArea taRemarks;
     @FXML
+    private TextField txtCaregiver;
+    @FXML
+    private TextField txtTelephone;
+    @FXML
     private DatePicker datepicker;
     @FXML
     private Button btnChange;
@@ -59,6 +63,8 @@ public class TreatmentController {
         this.txtEnd.setText(this.treatment.getEnd());
         this.txtDescription.setText(this.treatment.getDescription());
         this.taRemarks.setText(this.treatment.getRemarks());
+        this.txtCaregiver.setText(this.treatment.getCaregiver());
+        this.txtTelephone.setText(this.treatment.getTelephone());
     }
 
     @FXML
@@ -68,6 +74,8 @@ public class TreatmentController {
         this.treatment.setEnd(txtEnd.getText());
         this.treatment.setDescription(txtDescription.getText());
         this.treatment.setRemarks(taRemarks.getText());
+        this.treatment.setCaregiver(txtCaregiver.getText());
+        this.treatment.setTelephone(txtTelephone.getText());
         doUpdate();
         controller.readAllAndShowInTableView();
         stage.close();
