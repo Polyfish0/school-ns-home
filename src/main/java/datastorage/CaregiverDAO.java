@@ -46,9 +46,7 @@ public class CaregiverDAO extends DAOimp<Caregiver> {
      */
     @Override
     protected Caregiver getInstanceFromResultSet(ResultSet result) throws SQLException {
-        Caregiver c = null;
-        c = new Caregiver(result.getInt(1), result.getString(2), result.getString(3), result.getString(4));
-        return c;
+        return new Caregiver(result.getInt(1), result.getString(2), result.getString(3), result.getString(4));
     }
 
     /**

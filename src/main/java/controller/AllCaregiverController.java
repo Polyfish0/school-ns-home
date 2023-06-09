@@ -114,7 +114,7 @@ public class AllCaregiverController {
         List<Caregiver> allCaregiver;
         try {
             allCaregiver = dao.readAll();
-            for (Caregiver c: allCaregiver) {
+            for (Caregiver c : allCaregiver) {
                 this.tableviewContent.add(c);
             }
         } catch (SQLException e) {
@@ -146,8 +146,7 @@ public class AllCaregiverController {
         String firstname = this.txfFirstname.getText();
         String telephone = this.txfTelephone.getText();
         try {
-            Caregiver c = new Caregiver(firstname, surname, telephone);
-            dao.create(c);
+            dao.create(new Caregiver(firstname, surname, telephone));
         } catch (SQLException e) {
             e.printStackTrace();
         }
