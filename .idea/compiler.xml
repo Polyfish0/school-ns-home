@@ -20,6 +20,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="Pflegeheim" target="9" />
+      <module name="school-ns-home" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
