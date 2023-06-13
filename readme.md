@@ -37,7 +37,7 @@ Da in der Entwicklungsabteilung der HiTech GmbH agile Vorgehensweisen vorgeschri
 
  
 
-##Stand des Projektes
+## Stand des Projektes
 
 In den bisherigen Sprints wurden die Module zur Erfassung der Patienten- und Behandlungsdaten fertiggestellt. Es fehlt das Modul zur Erfassung der Pflegekräfte. Deswegen kann bisher ebenfalls nicht erfasst werden, welche Pflegekraft eine bestimmte Behandlung durchgeführt hat. In der letzten Sprint Review sind von der Curanum Schwachhausen Zweifel angebracht worden, dass die bisher entwickelte Software den Anforderungen des Datenschutzes genügt.
 
@@ -50,5 +50,13 @@ Wird das Open JDK verwendet, werden JavaFX-Abhängigkeiten nicht importiert. Die
 - Benutzername: SA
 - Passwort: SA
 - Bitte nicht in die Datenbank schauen, während die Applikation läuft. Das sorgt leider für einen Lock, der erst wieder verschwindet, wenn IntelliJ neugestartet wird!
+
+## Tests
+
+| Test                                                                      | Erfolg      |
+|---------------------------------------------------------------------------|-------------|
+| Der Vermögensstand wird in der Tabelle der Patienten nicht mehr angezeigt | erfolgreich |
+| In der Datenbank ist kein Feld mehr für den Vermögensstand zu finden      | erfolgreich | 
+
 
 ## Benutzername und Passwort für das Login
