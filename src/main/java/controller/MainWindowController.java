@@ -1,9 +1,13 @@
 package controller;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
+
 import java.io.IOException;
 
 public class MainWindowController {
@@ -42,5 +46,19 @@ public class MainWindowController {
             ex.printStackTrace();
         }
         AllCaregiverController controller = loader.getController();
+    }
+
+    @FXML
+    private void handleLogout(ActionEvent e) {
+        try {
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/LoginView.fxml"));
+            Scene scene = new Scene(loader.load());
+            Stage mainWindowStage = (Stage) mainBorderPane.getScene().getWindow();
+            mainWindowStage.setScene(scene);
+            mainWindowStage.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            Platform.exit();
+        }
     }
 }
