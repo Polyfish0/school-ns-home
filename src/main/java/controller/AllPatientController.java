@@ -1,5 +1,6 @@
 package controller;
 
+import datastorage.DAOFactory;
 import datastorage.PatientDAO;
 import datastorage.TreatmentDAO;
 import javafx.collections.FXCollections;
@@ -8,9 +9,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.stage.FileChooser;
 import model.Patient;
+import model.Treatment;
+import utils.AlertBuilder;
 import utils.DateConverter;
-import datastorage.DAOFactory;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
@@ -87,61 +94,62 @@ public class AllPatientController {
 
     /**
      * handles new firstname value
+     *
      * @param event event including the value that a user entered into the cell
      */
     @FXML
-    public void handleOnEditFirstname(TableColumn.CellEditEvent<Patient, String> event){
+    public void handleOnEditFirstname(TableColumn.CellEditEvent<Patient, String> event) {
         event.getRowValue().setFirstName(event.getNewValue());
         doUpdate(event);
     }
 
     /**
      * handles new surname value
+     *
      * @param event event including the value that a user entered into the cell
      */
     @FXML
-    public void handleOnEditSurname(TableColumn.CellEditEvent<Patient, String> event){
+    public void handleOnEditSurname(TableColumn.CellEditEvent<Patient, String> event) {
         event.getRowValue().setSurname(event.getNewValue());
         doUpdate(event);
     }
 
     /**
      * handles new birthdate value
+     *
      * @param event event including the value that a user entered into the cell
      */
     @FXML
-    public void handleOnEditDateOfBirth(TableColumn.CellEditEvent<Patient, String> event){
+    public void handleOnEditDateOfBirth(TableColumn.CellEditEvent<Patient, String> event) {
         event.getRowValue().setDateOfBirth(event.getNewValue());
         doUpdate(event);
     }
 
     /**
      * handles new carelevel value
+     *
      * @param event event including the value that a user entered into the cell
      */
     @FXML
-    public void handleOnEditCareLevel(TableColumn.CellEditEvent<Patient, String> event){
+    public void handleOnEditCareLevel(TableColumn.CellEditEvent<Patient, String> event) {
         event.getRowValue().setCareLevel(event.getNewValue());
         doUpdate(event);
     }
 
     /**
      * handles new roomnumber value
+     *
      * @param event event including the value that a user entered into the cell
      */
     @FXML
-    public void handleOnEditRoomnumber(TableColumn.CellEditEvent<Patient, String> event){
+    public void handleOnEditRoomnumber(TableColumn.CellEditEvent<Patient, String> event) {
         event.getRowValue().setRoomnumber(event.getNewValue());
         doUpdate(event);
     }
 
     /**
-     * handles new asset value
-     * @param event event including the value that a user entered into the cell
-     */
-
-    /**
      * updates a patient by calling the update-Method in the {@link PatientDAO}
+     *
      * @param t row to be updated by the user (includes the patient)
      */
     private void doUpdate(TableColumn.CellEditEvent<Patient, String> t) {
@@ -204,6 +212,92 @@ public class AllPatientController {
         }
         readAllAndShowInTableView();
         clearTextfields();
+    }
+
+    /**
+     * Handels an ExportClickEvent.
+     */
+    @FXML
+    public void handleExport() {
+        File saveLocation = getSaveFile();
+
+        if(saveLocation == null) {
+            AlertBuilder.AlertDialog(
+                    Alert.AlertType.ERROR,
+                    "Bitte gebe eine Datei an!",
+                    "Bitte gebe eine Datei an, in welcher die Informationen gespeichert werden sollen."
+            );
+
+            return;
+        }
+
+        saveStringToFile(saveLocation, prepareExportString());
+    }
+
+    /**
+     * This function writes a string to a {@link File}
+     *
+     * @param saveLocation The file where the content should be written to
+     * @param content      The file content
+     */
+    private void saveStringToFile(File saveLocation, String content) {
+        try {
+            saveLocation.createNewFile();
+
+            if (!saveLocation.canWrite()) {
+                AlertBuilder.AlertDialog(
+                        Alert.AlertType.ERROR,
+                        "Die Datei ist nicht beschreibbar!",
+                        "Diese Datei kann nicht beschrieben werden!\nBitte wähle eine andere Datei oder einen anderen Speicherort."
+                );
+
+                return;
+            }
+
+            FileWriter fw = new FileWriter(saveLocation.getAbsolutePath());
+            fw.write(content);
+            fw.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * This function asks the user where the file should be stored.
+     *
+     * @return Returns an instance of {@link File} for the selected file
+     */
+    private File getSaveFile() {
+        FileChooser saveDialog = new FileChooser();
+        saveDialog.setTitle("Speichern");
+        saveDialog.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text Datei", "*.txt"));
+        return saveDialog.showSaveDialog(tableView.getScene().getWindow());
+    }
+
+    /**
+     * This functions generates a String with every information, that is stored inside the database, about a patient
+     *
+     * @return Returns the information's of the patient
+     */
+    private String prepareExportString() {
+        TreatmentDAO tDao = DAOFactory.getDAOFactory().createTreatmentDAO();
+        Patient selectedItem = this.tableView.getSelectionModel().getSelectedItem();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(selectedItem.toString());
+        sb.append("\n");
+
+        try {
+            int treatmentCounter = 1;
+            for (Treatment treatment : tDao.readTreatmentsByPid(selectedItem.getPid())) {
+                sb.append(treatment.toString().replace("Behandlung", "Behandlung " + treatmentCounter++));
+                sb.append("\n");
+            }
+        } catch (SQLException e) {
+            sb.append("Keine Behandlungsdaten Gefunden\n");
+        }
+
+        return sb.toString().replace("null", "Keine Daten");
     }
 
     /**
