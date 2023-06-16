@@ -45,7 +45,7 @@ public class LoginViewController {
             );
             return false;
         }
-        return false;
+        return true;
     }
 
     /**
