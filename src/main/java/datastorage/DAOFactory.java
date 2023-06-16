@@ -19,8 +19,16 @@ public class DAOFactory {
         return new TreatmentDAO(ConnectionBuilder.getConnection());
     }
 
+    public BlockedTreatmentDAO createBlockedTreatmentDAO() {
+        return new BlockedTreatmentDAO(ConnectionBuilder.getConnection());
+    }
+
     public PatientDAO createPatientDAO() {
         return new PatientDAO(ConnectionBuilder.getConnection());
+    }
+
+    public BlockedPatientDAO createBlockedPatientDAO() {
+        return new BlockedPatientDAO(ConnectionBuilder.getConnection());
     }
 
     public UsersDAO createUsersDAO() {

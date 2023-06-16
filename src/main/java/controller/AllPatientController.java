@@ -1,8 +1,6 @@
 package controller;
 
-import datastorage.DAOFactory;
-import datastorage.PatientDAO;
-import datastorage.TreatmentDAO;
+import datastorage.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -10,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
+import model.BlockedPatient;
 import model.Patient;
 import model.Treatment;
 import utils.AlertBuilder;
@@ -215,13 +214,13 @@ public class AllPatientController {
     }
 
     /**
-     * Handels an ExportClickEvent.
+     * Handels an ExportClickEvent. It lets you export a patient's data
      */
     @FXML
     public void handleExport() {
         File saveLocation = getSaveFile();
 
-        if(saveLocation == null) {
+        if (saveLocation == null) {
             AlertBuilder.AlertDialog(
                     Alert.AlertType.ERROR,
                     "Bitte gebe eine Datei an!",
@@ -298,6 +297,57 @@ public class AllPatientController {
         }
 
         return sb.toString().replace("null", "Keine Daten");
+    }
+
+    @FXML
+    public void handleEndTreatment() {
+        Patient selectedPatient = tableView.getSelectionModel().getSelectedItem();
+        if (selectedPatient == null) {
+            AlertBuilder.AlertDialog(
+                    Alert.AlertType.ERROR,
+                    "Kein Patient ausgewählt",
+                    "Bitte wähle erst einen Patienten in der Liste aus!"
+            );
+
+            return;
+        }
+
+        if (AlertBuilder.ConfirmationDialog(
+                "Behandlung beenden?",
+                "Sind sie sich sicher, dass sie die Behandlung beenden wollen?"
+        ).get() == ButtonType.CANCEL)
+            return;
+
+        endPatientTreatment(selectedPatient);
+    }
+
+    /**
+     * This function ends the treatment of a patient and moves every patient information to another database table, which is not shown inside the GUI
+     * @param patient
+     */
+    private void endPatientTreatment(Patient patient) {
+        PatientDAO bDAO = DAOFactory.getDAOFactory().createPatientDAO();
+        BlockedPatientDAO bpDAO = DAOFactory.getDAOFactory().createBlockedPatientDAO();
+        TreatmentDAO tDAO = DAOFactory.getDAOFactory().createTreatmentDAO();
+        BlockedTreatmentDAO btDAO = DAOFactory.getDAOFactory().createBlockedTreatmentDAO();
+
+        try {
+            bpDAO.createFromPatient(patient);
+            tDAO.readTreatmentsByPid(patient.getPid()).forEach(treatment -> {
+                try {
+                    btDAO.create(treatment);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            tDAO.deleteByPid(patient.getPid());
+            bDAO.deleteById(patient.getPid());
+
+            readAllAndShowInTableView();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
