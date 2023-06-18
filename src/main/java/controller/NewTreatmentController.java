@@ -2,18 +2,20 @@ package controller;
 
 import datastorage.DAOFactory;
 import datastorage.TreatmentDAO;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
+import model.Caregiver;
 import model.Patient;
 import model.Treatment;
 import utils.DateConverter;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class NewTreatmentController {
     @FXML
@@ -29,9 +31,9 @@ public class NewTreatmentController {
     @FXML
     private TextArea taRemarks;
     @FXML
-    private TextField txtCaregiver;
-    @FXML
     private TextField txtTelephone;
+    @FXML
+    private ComboBox comboboxCaregiver;
     @FXML
     private DatePicker datepicker;
 
@@ -43,7 +45,24 @@ public class NewTreatmentController {
         this.controller= controller;
         this.patient = patient;
         this.stage = stage;
+
+        setupCaregiverCombobox();
         showPatientData();
+    }
+
+    private void setupCaregiverCombobox() {
+        try {
+            ArrayList<String> caregiverList = new ArrayList<>();
+
+            for(Caregiver caregiver : DAOFactory.getDAOFactory().createCaregiverDAO().readAll()) {
+                String name = caregiver.getFirstName() + " " + caregiver.getSurname();
+                caregiverList.add(name);
+            }
+
+            comboboxCaregiver.setItems(FXCollections.observableList(caregiverList));
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private void showPatientData(){
@@ -59,7 +78,7 @@ public class NewTreatmentController {
         LocalTime end = DateConverter.convertStringToLocalTime(txtEnd.getText());
         String description = txtDescription.getText();
         String remarks = taRemarks.getText();
-        String caregiver = txtCaregiver.getText();
+        String caregiver = comboboxCaregiver.getSelectionModel().getSelectedItem().toString();
         String telephone = txtTelephone.getText();
         Treatment treatment = new Treatment(patient.getPid(), date,
                 begin, end, description, remarks, caregiver, telephone);
