@@ -15,8 +15,8 @@ public class DataDeletionThread extends Thread {
      */
     @Override
     public void run() {
-        if(!TimeUtils.monthForDataDeletion())
-            return;
+        //if(!TimeUtils.monthForDataDeletion())
+            //return;
 
         BlockedPatientDAO bpDAO = DAOFactory.getDAOFactory().createBlockedPatientDAO();
         BlockedTreatmentDAO btDAO = DAOFactory.getDAOFactory().createBlockedTreatmentDAO();

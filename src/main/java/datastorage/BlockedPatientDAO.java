@@ -9,6 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 
 /**
@@ -33,8 +35,9 @@ public class BlockedPatientDAO extends DAOimp<BlockedPatient> {
      */
     @Override
     protected String getCreateStatementString(BlockedPatient patient) {
+        LocalDate date = LocalDate.of(LocalDate.now().getYear() + 1, 1, 1);
         return String.format("INSERT INTO blocked_patient (pid, firstname, surname, dateOfBirth, carelevel, roomnumber, treatment_ended) VALUES ('%d', '%s', '%s', '%s', '%s', '%s', '%d')",
-                patient.getPid(), patient.getFirstName(), patient.getSurname(), patient.getDateOfBirth(), patient.getCareLevel(), patient.getRoomnumber(), Instant.now().getEpochSecond());
+                patient.getPid(), patient.getFirstName(), patient.getSurname(), patient.getDateOfBirth(), patient.getCareLevel(), patient.getRoomnumber(), date.atStartOfDay(ZoneOffset.UTC).toEpochSecond());
     }
 
     /**
