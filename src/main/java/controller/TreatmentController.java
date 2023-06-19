@@ -3,14 +3,19 @@ package controller;
 import datastorage.DAOFactory;
 import datastorage.PatientDAO;
 import datastorage.TreatmentDAO;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import model.Caregiver;
 import model.Patient;
 import model.Treatment;
 import utils.DateConverter;
+
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class TreatmentController {
     @FXML
@@ -26,9 +31,7 @@ public class TreatmentController {
     @FXML
     private TextArea taRemarks;
     @FXML
-    private TextField txtCaregiver;
-    @FXML
-    private TextField txtTelephone;
+    private ComboBox comboboxCaregiver;
     @FXML
     private DatePicker datepicker;
     @FXML
@@ -40,10 +43,11 @@ public class TreatmentController {
     private Stage stage;
     private Patient patient;
     private Treatment treatment;
+    private HashMap<String, Caregiver> name2caregiver = new HashMap<>();
 
     public void initializeController(AllTreatmentController controller, Stage stage, Treatment treatment) {
         this.stage = stage;
-        this.controller= controller;
+        this.controller = controller;
         PatientDAO pDao = DAOFactory.getDAOFactory().createPatientDAO();
         try {
             this.patient = pDao.read((int) treatment.getPid());
@@ -54,8 +58,10 @@ public class TreatmentController {
         }
     }
 
-    private void showData(){
-        this.lblPatientName.setText(patient.getSurname()+", "+patient.getFirstName());
+    private void showData() {
+        setupCaregiverCombobox();
+
+        this.lblPatientName.setText(patient.getSurname() + ", " + patient.getFirstName());
         this.lblCarelevel.setText(patient.getCareLevel());
         LocalDate date = DateConverter.convertStringToLocalDate(treatment.getDate());
         this.datepicker.setValue(date);
@@ -63,25 +69,50 @@ public class TreatmentController {
         this.txtEnd.setText(this.treatment.getEnd());
         this.txtDescription.setText(this.treatment.getDescription());
         this.taRemarks.setText(this.treatment.getRemarks());
-        this.txtCaregiver.setText(this.treatment.getCaregiver());
-        this.txtTelephone.setText(this.treatment.getTelephone());
+        this.treatment.setTelephone(name2caregiver.get(comboboxCaregiver.getValue().toString()).getTelephone());
+    }
+
+    private void setupCaregiverCombobox() {
+        try {
+            name2caregiver.clear();
+
+            ArrayList<Caregiver> caregivers = (ArrayList<Caregiver>) DAOFactory.getDAOFactory().createCaregiverDAO().readAll();
+            ArrayList<String> caregiverList = new ArrayList<>();
+            int indexCounter = 0;
+
+            for (int i = 0; i < caregivers.size(); i++) {
+                Caregiver caregiver = caregivers.get(i);
+
+                String name = caregiver.getFirstName() + " " + caregiver.getSurname();
+                caregiverList.add(name);
+                name2caregiver.put(name, caregiver);
+
+                if (name == treatment.getCaregiver())
+                    indexCounter = i;
+            }
+
+            comboboxCaregiver.setItems(FXCollections.observableList(caregiverList));
+            comboboxCaregiver.getSelectionModel().select(indexCounter);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
-    public void handleChange(){
+    public void handleChange() {
         this.treatment.setDate(this.datepicker.getValue().toString());
         this.treatment.setBegin(txtBegin.getText());
         this.treatment.setEnd(txtEnd.getText());
         this.treatment.setDescription(txtDescription.getText());
         this.treatment.setRemarks(taRemarks.getText());
-        this.treatment.setCaregiver(txtCaregiver.getText());
-        this.treatment.setTelephone(txtTelephone.getText());
+        this.treatment.setCaregiver(comboboxCaregiver.getValue().toString());
+        this.treatment.setTelephone(name2caregiver.get(comboboxCaregiver.getValue().toString()).getTelephone());
         doUpdate();
         controller.readAllAndShowInTableView();
         stage.close();
     }
 
-    private void doUpdate(){
+    private void doUpdate() {
         TreatmentDAO dao = DAOFactory.getDAOFactory().createTreatmentDAO();
         try {
             dao.update(treatment);
@@ -91,7 +122,7 @@ public class TreatmentController {
     }
 
     @FXML
-    public void handleCancel(){
+    public void handleCancel() {
         stage.close();
     }
 }

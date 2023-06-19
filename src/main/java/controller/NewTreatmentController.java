@@ -31,8 +31,6 @@ public class NewTreatmentController {
     @FXML
     private TextArea taRemarks;
     @FXML
-    private TextField txtTelephone;
-    @FXML
     private ComboBox comboboxCaregiver;
     @FXML
     private DatePicker datepicker;
@@ -40,6 +38,7 @@ public class NewTreatmentController {
     private AllTreatmentController controller;
     private Patient patient;
     private Stage stage;
+    private HashMap<String, Caregiver> name2caregiver = new HashMap<>();
 
     public void initialize(AllTreatmentController controller, Stage stage, Patient patient) {
         this.controller= controller;
@@ -52,11 +51,15 @@ public class NewTreatmentController {
 
     private void setupCaregiverCombobox() {
         try {
+            name2caregiver.clear();
+
             ArrayList<String> caregiverList = new ArrayList<>();
 
             for(Caregiver caregiver : DAOFactory.getDAOFactory().createCaregiverDAO().readAll()) {
                 String name = caregiver.getFirstName() + " " + caregiver.getSurname();
                 caregiverList.add(name);
+
+                name2caregiver.put(name, caregiver);
             }
 
             comboboxCaregiver.setItems(FXCollections.observableList(caregiverList));
@@ -78,8 +81,8 @@ public class NewTreatmentController {
         LocalTime end = DateConverter.convertStringToLocalTime(txtEnd.getText());
         String description = txtDescription.getText();
         String remarks = taRemarks.getText();
-        String caregiver = comboboxCaregiver.getSelectionModel().getSelectedItem().toString();
-        String telephone = txtTelephone.getText();
+        String caregiver = comboboxCaregiver.getValue().toString();
+        String telephone = name2caregiver.get(comboboxCaregiver.getValue().toString()).getTelephone();
         Treatment treatment = new Treatment(patient.getPid(), date,
                 begin, end, description, remarks, caregiver, telephone);
         createTreatment(treatment);

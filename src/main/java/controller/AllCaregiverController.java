@@ -5,11 +5,14 @@ import datastorage.DAOFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import model.Caregiver;
-import javafx.scene.control.*;
+
 import java.sql.SQLException;
 import java.util.List;
 
@@ -18,17 +21,7 @@ import java.util.List;
  * The <code>AllCaregiverController</code> contains the entire logic of the caregiver view. It determines which data is displayed and how to react to events.
  */
 public class AllCaregiverController {
-    @FXML
-    private TableView<Caregiver> tableView;
-    @FXML
-    private TableColumn<Caregiver, Integer> colID;
-    @FXML
-    private TableColumn<Caregiver, String> colSurname;
-    @FXML
-    private TableColumn<Caregiver, String> colFirstName;
-    @FXML
-    private TableColumn<Caregiver, String> colTelephone;
-
+    private final ObservableList<Caregiver> tableviewContent = FXCollections.observableArrayList();
     @FXML
     TextField txfSurname;
     @FXML
@@ -39,8 +32,16 @@ public class AllCaregiverController {
     Button btnAdd;
     @FXML
     Button btnDelete;
-
-    private ObservableList<Caregiver> tableviewContent = FXCollections.observableArrayList();
+    @FXML
+    private TableView<Caregiver> tableView;
+    @FXML
+    private TableColumn<Caregiver, Integer> colID;
+    @FXML
+    private TableColumn<Caregiver, String> colSurname;
+    @FXML
+    private TableColumn<Caregiver, String> colFirstName;
+    @FXML
+    private TableColumn<Caregiver, String> colTelephone;
     private CaregiverDAO dao;
 
     /**
@@ -65,6 +66,7 @@ public class AllCaregiverController {
 
     /**
      * handles new firstname value
+     *
      * @param event event including the value that a user entered into the cell
      */
     @FXML
@@ -75,6 +77,7 @@ public class AllCaregiverController {
 
     /**
      * handles new surname value
+     *
      * @param event event including the value that a user entered into the cell
      */
     @FXML
@@ -85,6 +88,7 @@ public class AllCaregiverController {
 
     /**
      * handles new telephone value
+     *
      * @param event event including the value that a user entered into the cell
      */
     @FXML
@@ -95,6 +99,7 @@ public class AllCaregiverController {
 
     /**
      * updates a caregiver by calling the update-Method in the {@link CaregiverDAO}
+     *
      * @param t row to be updated by the user (includes the caregiver)
      */
     private void doUpdate(TableColumn.CellEditEvent<Caregiver, String> t) {
