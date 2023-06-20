@@ -67,7 +67,7 @@ Wird das Open JDK verwendet, werden JavaFX-Abhängigkeiten nicht importiert. Die
 
 ## Features die nicht funktionieren
 
-Die FUnktionen werden nicht abgetestet, da hierfür die Tests fehlen.
+Die Funktionen werden nicht automatisch getestet, da hierfür die Tests fehlen.
 
 ## Benutzername und Passwort für das Login
 - Benutzername: mika
