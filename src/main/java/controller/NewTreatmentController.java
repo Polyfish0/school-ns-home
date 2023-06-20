@@ -17,6 +17,9 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * The <code>NewTreatmentController</code> contains the entire logic of the new treatment view. It determines which data is displayed and how to react to events.
+ */
 public class NewTreatmentController {
     @FXML
     private Label lblSurname;
@@ -40,6 +43,12 @@ public class NewTreatmentController {
     private Stage stage;
     private HashMap<String, Caregiver> name2caregiver = new HashMap<>();
 
+    /**
+     * initalizes the new treatment from the params
+     * @param controller
+     * @param stage
+     * @param patient
+     */
     public void initialize(AllTreatmentController controller, Stage stage, Patient patient) {
         this.controller= controller;
         this.patient = patient;
@@ -49,6 +58,9 @@ public class NewTreatmentController {
         showPatientData();
     }
 
+    /**
+     * sets the caregiver combobox
+     */
     private void setupCaregiverCombobox() {
         try {
             name2caregiver.clear();
@@ -68,11 +80,17 @@ public class NewTreatmentController {
         }
     }
 
+    /**
+     * shows the patient
+     */
     private void showPatientData(){
         this.lblFirstname.setText(patient.getFirstName());
         this.lblSurname.setText(patient.getSurname());
     }
 
+    /**
+     * adding a treatment
+     */
     @FXML
     public void handleAdd(){
         LocalDate date = this.datepicker.getValue();
@@ -90,6 +108,10 @@ public class NewTreatmentController {
         stage.close();
     }
 
+    /**
+     * creates a treatment
+     * @param treatment
+     */
     private void createTreatment(Treatment treatment) {
         TreatmentDAO dao = DAOFactory.getDAOFactory().createTreatmentDAO();
         try {
@@ -99,6 +121,9 @@ public class NewTreatmentController {
         }
     }
 
+    /**
+     * cancels the action
+     */
     @FXML
     public void handleCancel(){
         stage.close();

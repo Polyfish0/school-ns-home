@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class BlockedPatientDAO extends DAOimp<BlockedPatient> {
 
     /**
-     * constructs Onbject. Calls the Constructor from <code>DAOImp</code> to store the connection.
+     * constructs Object. Calls the Constructor from <code>DAOImp</code> to store the connection.
      *
      * @param conn
      */
@@ -121,6 +121,11 @@ public class BlockedPatientDAO extends DAOimp<BlockedPatient> {
         return String.format("Delete FROM blocked_patient WHERE pid=%d", key);
     }
 
+    /**
+     * creates a blocked patient
+     * @param patient
+     * @throws SQLException
+     */
     public void createFromPatient(Patient patient) throws SQLException {
         create(new BlockedPatient(
                 patient.getPid(),

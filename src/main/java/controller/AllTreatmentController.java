@@ -20,6 +20,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The <code>AllTreatmentController</code> contains the entire logic of the treatment view. It determines which data is displayed and how to react to events.
+ */
 public class AllTreatmentController {
     @FXML
     private TableView<Treatment> tableView;
@@ -54,6 +57,9 @@ public class AllTreatmentController {
     private ArrayList<Patient> patientList;
     private Main main;
 
+    /**
+     * Initializes the corresponding fields. Is called as soon as the corresponding FXML file is to be displayed.
+     */
     public void initialize() {
         readAllAndShowInTableView();
         comboBox.setItems(myComboBoxData);
@@ -72,6 +78,9 @@ public class AllTreatmentController {
         createComboBoxData();
     }
 
+    /**
+     * reads the treatment list and shows them in the table
+     */
     public void readAllAndShowInTableView() {
         comboBox.getSelectionModel().select(0);
         this.dao = DAOFactory.getDAOFactory().createTreatmentDAO();
@@ -87,6 +96,9 @@ public class AllTreatmentController {
         }
     }
 
+    /**
+     * creates the data of the combobox
+     */
     private void createComboBoxData() {
         PatientDAO dao = DAOFactory.getDAOFactory().createPatientDAO();
         try {
@@ -100,7 +112,9 @@ public class AllTreatmentController {
         }
     }
 
-
+    /**
+     * handels the action of the combobox. Once a patient has been selected, the related treatments are displayed.
+     */
     @FXML
     public void handleComboBox() {
         String p = this.comboBox.getSelectionModel().getSelectedItem();
@@ -130,6 +144,10 @@ public class AllTreatmentController {
         }
     }
 
+    /**
+     * @param surname
+     * @return
+     */
     private Patient searchInList(String surname) {
         for (int i = 0; i < this.patientList.size(); i++) {
             if (this.patientList.get(i).getSurname().equals(surname)) {
@@ -139,6 +157,9 @@ public class AllTreatmentController {
         return null;
     }
 
+    /**
+     * deletes a treatment if the delete button was clicked.
+     */
     @FXML
     public void handleDelete() {
         int index = this.tableView.getSelectionModel().getSelectedIndex();
@@ -151,6 +172,9 @@ public class AllTreatmentController {
         }
     }
 
+    /**
+     * transfers the selected patient to the <code>NewTreatmentController</code>. If no patient is selected, a warning appears.
+     */
     @FXML
     public void handleNewTreatment() {
         try {
@@ -166,6 +190,9 @@ public class AllTreatmentController {
         }
     }
 
+    /**
+     * selects the item that was clicked in the table
+     */
     @FXML
     public void handleMouseClick() {
         tableView.setOnMouseClicked(event -> {
@@ -178,6 +205,10 @@ public class AllTreatmentController {
         });
     }
 
+    /**
+     * loads the <code>NewTreatmentView</code>
+     * @param patient
+     */
     public void newTreatmentWindow(Patient patient) {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/NewTreatmentView.fxml"));
@@ -198,6 +229,10 @@ public class AllTreatmentController {
         }
     }
 
+    /**
+     * loads the <code>TreatmentView</code>
+     * @param treatment
+     */
     public void treatmentWindow(Treatment treatment) {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/TreatmentView.fxml"));

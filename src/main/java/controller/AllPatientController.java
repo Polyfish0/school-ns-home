@@ -299,6 +299,9 @@ public class AllPatientController {
         return sb.toString().replace("null", "Keine Daten");
     }
 
+    /**
+     * handels the event of ending a treatment
+     */
     @FXML
     public void handleEndTreatment() {
         Patient selectedPatient = tableView.getSelectionModel().getSelectedItem();

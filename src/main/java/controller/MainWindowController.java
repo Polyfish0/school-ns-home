@@ -10,11 +10,18 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * The <code>MainWindowController</code> contains the entire logic of the main window view. It determines which data is displayed and how to react to events.
+ */
 public class MainWindowController {
 
     @FXML
     private BorderPane mainBorderPane;
 
+    /**
+     * loads the <code>AllPatientView</code>
+     * @param e
+     */
     @FXML
     private void handleShowAllPatient(ActionEvent e) {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("/AllPatientView.fxml"));
@@ -26,6 +33,10 @@ public class MainWindowController {
         AllPatientController controller = loader.getController();
     }
 
+    /**
+     * loads the <code>AllTreatmentView.fxml</code>
+     * @param e
+     */
     @FXML
     private void handleShowAllTreatments(ActionEvent e) {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("/AllTreatmentView.fxml"));
@@ -37,6 +48,10 @@ public class MainWindowController {
         AllTreatmentController controller = loader.getController();
     }
 
+    /**
+     * loads the <code>AllCaregiverView.fxml</code>
+     * @param e
+     */
     @FXML
     private void handleShowAllCaregiver(ActionEvent e) {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("/AllCaregiverView.fxml"));
@@ -48,6 +63,10 @@ public class MainWindowController {
         AllCaregiverController controller = loader.getController();
     }
 
+    /**
+     * loads the <code>LogonView.fxml</code>
+     * @param e
+     */
     @FXML
     private void handleLogout(ActionEvent e) {
         try {

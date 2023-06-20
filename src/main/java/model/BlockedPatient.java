@@ -27,10 +27,16 @@ public class BlockedPatient extends Patient {
         this.treatmentEnded = treatmentEnded;
     }
 
+    /**
+     * @return treatment ended
+     */
     public long getTreatmentEnded() {
         return treatmentEnded;
     }
 
+    /**
+     * @return the ended treatment as a string
+     */
     @Override
     public String toString() {
         return super.toString() + "Treatment Ended (Unix Timestamp): " + getTreatmentEnded() + "\n";

@@ -16,6 +16,9 @@ import utils.Password;
 
 import java.io.IOException;
 
+/**
+ * The <code>LoginViewController</code> contains the entire logic of the login view. It determines which data is displayed and how to react to events.
+ */
 public class LoginViewController {
     @FXML
     private TextField usernameInput;

@@ -53,10 +53,22 @@ Wird das Open JDK verwendet, werden JavaFX-Abhängigkeiten nicht importiert. Die
 
 ## Tests
 
-| Test                                                                      | Erfolg      |
-|---------------------------------------------------------------------------|-------------|
-| Der Vermögensstand wird in der Tabelle der Patienten nicht mehr angezeigt | erfolgreich |
-| In der Datenbank ist kein Feld mehr für den Vermögensstand zu finden      | erfolgreich | 
+| Test                                                                                                     | Erfolg      |
+|----------------------------------------------------------------------------------------------------------|-------------|
+| Der Vermögensstand wird in der Tabelle der Patienten nicht mehr angezeigt                                | erfolgreich |
+| Der Pfleger kann das Ende einer Behanldung markieren, sodass die Behandlung nach 10 Jahren gelöscht wird | erfolgreich | 
+| In der Datenbank ist kein Feld mehr für den Vermögensstand zu finden                                     | erfolgreich | 
+| Nach Behandlungsende werden die Daten gesperrt und getrennt gespeichert                                  | erfolgreich |
+| In der Behandlungstabelle werden nun auch Pfleger und zugehörige Nummer angeezeigt                       | erfolgreich |
+| Der Pfleger wird bei dem anlegen einer neuen Behandlung der Pfleger über eine Combobox hinzugefügt       | erfolgreich |
+| Der Patient kann seine Daten ausgeben lassen                                                             | erfolgreich |
+| Die Pfleger können sich mit einem Benutzernamen und Passwort anmelden                                    | erfolgreich |
+| Es gibt eine eigene Seite wo die Pflegerdaten eingetragen und gespeichert werden können                  | erfolgreich | 
 
+## Features die nicht funktionieren
+
+Die FUnktionen werden nicht abgetestet, da hierfür die Tests fehlen.
 
 ## Benutzername und Passwort für das Login
+- Benutzername: mika
+- Passwort: 123
