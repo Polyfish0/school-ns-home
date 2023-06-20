@@ -12,12 +12,26 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implements the Interface <code>DAOImp</code>. Overrides methods to generate specific patient-SQL-queries.
+ */
 public class BlockedTreatmentDAO extends DAOimp<Treatment> {
 
+    /**
+     * constructs Object. Calls the Constructor from <code>DAOImp</code> to store the connection.
+     *
+     * @param conn
+     */
     public BlockedTreatmentDAO(Connection conn) {
         super(conn);
     }
 
+    /**
+     * generates a <code>INSERT INTO</code>-Statement for a given treatment
+     *
+     * @param treatment for which a specific INSERT INTO is to be created
+     * @return <code>String</code> with the generated SQL.
+     */
     @Override
     protected String getCreateStatementString(Treatment treatment) {
         return String.format("INSERT INTO blocked_treatment (tid, pid, treatment_date, begin, end, description, remarks, caregiver, telephone) VALUES " +
@@ -26,11 +40,23 @@ public class BlockedTreatmentDAO extends DAOimp<Treatment> {
                 treatment.getRemarks(), treatment.getCaregiver(), treatment.getTelephone());
     }
 
+    /**
+     * generates a <code>select</code>-Statement for a given key
+     *
+     * @param key for which a specific SELECTis to be created
+     * @return <code>String</code> with the generated SQL.
+     */
     @Override
     protected String getReadByIDStatementString(long key) {
         return String.format("SELECT * FROM blocked_treatment WHERE tid = %d", key);
     }
 
+    /**
+     * maps a <code>ResultSet</code> to a <code>Treatment</code>
+     *
+     * @param result ResultSet with a single row. Columns will be mapped to a treatment-object.
+     * @return treatment with the data from the resultSet.
+     */
     @Override
     protected Treatment getInstanceFromResultSet(ResultSet result) throws SQLException {
         LocalDate date = DateConverter.convertStringToLocalDate(result.getString(3));
@@ -41,11 +67,22 @@ public class BlockedTreatmentDAO extends DAOimp<Treatment> {
         return m;
     }
 
+    /**
+     * generates a <code>SELECT</code>-Statement for all treatments.
+     *
+     * @return <code>String</code> with the generated SQL.
+     */
     @Override
     protected String getReadAllStatementString() {
         return "SELECT * FROM blocked_treatment";
     }
 
+    /**
+     * maps a <code>ResultSet</code> to a <code>Treatment-List</code>
+     *
+     * @param result ResultSet with a multiple rows. Data will be mapped to treatment-object.
+     * @return ArrayList with treatments from the resultSet.
+     */
     @Override
     protected ArrayList<Treatment> getListFromResultSet(ResultSet result) throws SQLException {
         ArrayList<Treatment> list = new ArrayList<>();
@@ -61,6 +98,12 @@ public class BlockedTreatmentDAO extends DAOimp<Treatment> {
         return list;
     }
 
+    /**
+     * generates a <code>UPDATE</code>-Statement for a given treatment
+     *
+     * @param treatment for which a specific update is to be created
+     * @return <code>String</code> with the generated SQL.
+     */
     @Override
     protected String getUpdateStatementString(Treatment treatment) {
         return String.format("UPDATE blocked_treatment SET pid = %d, treatment_date ='%s', begin = '%s', end = '%s'," +
@@ -69,11 +112,22 @@ public class BlockedTreatmentDAO extends DAOimp<Treatment> {
                 treatment.getTid());
     }
 
+    /**
+     * generates a <code>delete</code>-Statement for a given key
+     *
+     * @param key for which a specific DELETE is to be created
+     * @return <code>String</code> with the generated SQL.
+     */
     @Override
     protected String getDeleteStatementString(long key) {
         return String.format("Delete FROM blocked_treatment WHERE tid = %d", key);
     }
 
+    /**
+     * @param pid
+     * @return a list of treatments
+     * @throws SQLException
+     */
     public List<Treatment> readBlockedTreatmentsByPid(long pid) throws SQLException {
         ArrayList<Treatment> list = new ArrayList<Treatment>();
         Treatment object = null;
@@ -83,10 +137,19 @@ public class BlockedTreatmentDAO extends DAOimp<Treatment> {
         return list;
     }
 
+    /**
+     * @param pid
+     * @return a <code>String</code> of the blocked treatments of a patient
+     */
     private String getReadAllBlockedTreatmentsOfOnePatientByPid(long pid) {
         return String.format("SELECT * FROM blocked_treatment WHERE pid = %d", pid);
     }
 
+    /**
+     * deletes a treatment by patient id
+     * @param key
+     * @throws SQLException
+     */
     public void deleteByPid(long key) throws SQLException {
         Statement st = conn.createStatement();
         st.executeUpdate(String.format("Delete FROM blocked_treatment WHERE pid = %d", key));

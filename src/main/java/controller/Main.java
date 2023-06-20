@@ -16,15 +16,28 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * builds the program
+ */
 public class Main extends Application {
 
     private Stage primaryStage;
 
+    /**
+     * @param primaryStage the primary stage for this application, onto which
+     * the application scene can be set.
+     * Applications may create other stages, if needed, but they will not be
+     * primary stages.
+     */
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         mainWindow();
     }
+
+    /**
+     * loads the <code>MainWindowView</code>
+     */
 
     public void mainWindow() {
         ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
@@ -54,6 +67,9 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * @param args
+     */
     public static void main(String[] args) {
         launch(args);
     }

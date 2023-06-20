@@ -17,6 +17,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * The <code>TreatmentController</code> contains the entire logic of the single treatment view. It determines which data is displayed and how to react to events.
+ */
 public class TreatmentController {
     @FXML
     private Label lblPatientName;
@@ -45,6 +48,12 @@ public class TreatmentController {
     private Treatment treatment;
     private HashMap<String, Caregiver> name2caregiver = new HashMap<>();
 
+    /**
+     * initalize a single treatment from given params
+     * @param controller
+     * @param stage
+     * @param treatment
+     */
     public void initializeController(AllTreatmentController controller, Stage stage, Treatment treatment) {
         this.stage = stage;
         this.controller = controller;
@@ -58,6 +67,9 @@ public class TreatmentController {
         }
     }
 
+    /**
+     * shows the data
+     */
     private void showData() {
         setupCaregiverCombobox();
 
@@ -72,6 +84,9 @@ public class TreatmentController {
         this.treatment.setTelephone(name2caregiver.get(comboboxCaregiver.getValue().toString()).getTelephone());
     }
 
+    /**
+     * sets the caregiver combobox
+     */
     private void setupCaregiverCombobox() {
         try {
             name2caregiver.clear();
@@ -98,6 +113,9 @@ public class TreatmentController {
         }
     }
 
+    /**
+     * handels if a information is changed
+     */
     @FXML
     public void handleChange() {
         this.treatment.setDate(this.datepicker.getValue().toString());
@@ -112,6 +130,9 @@ public class TreatmentController {
         stage.close();
     }
 
+    /**
+     * updates the DAO
+     */
     private void doUpdate() {
         TreatmentDAO dao = DAOFactory.getDAOFactory().createTreatmentDAO();
         try {
@@ -121,6 +142,9 @@ public class TreatmentController {
         }
     }
 
+    /**
+     * cancels the action
+     */
     @FXML
     public void handleCancel() {
         stage.close();
