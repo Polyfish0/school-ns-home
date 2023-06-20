@@ -50,11 +50,10 @@
                     <HBox alignment="TOP_CENTER" prefWidth="200.0" spacing="10.0">
                         <children>
                             <Button fx:id="btnAdd" mnemonicParsing="false" onAction="#handleAdd" prefWidth="112.5" text="Hinzufügen" />
-                            <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#handleDeleteRow" prefWidth="112.5" text="Löschen" />
+                            <Button fx:id="btnExport" mnemonicParsing="false" onAction="#handleExport" prefWidth="112.5" text="Exportieren" />
                         </children>
                     </HBox>
                     <HBox alignment="TOP_CENTER" prefWidth="250.0" spacing="10.0">
-                        <Button fx:id="btnExport" mnemonicParsing="false" onAction="#handleExport" prefWidth="112.5" text="Exportieren" />
                         <Button fx:id="btnEndTreatment" mnemonicParsing="false" onAction="#handleEndTreatment" prefWidth="112.5" text="Behandlungsende" />
                         <VBox.margin>
                             <Insets top="10.0" />

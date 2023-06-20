@@ -42,8 +42,6 @@ public class AllPatientController {
     private TableColumn<Patient, String> colRoom;
 
     @FXML
-    Button btnDelete;
-    @FXML
     Button btnAdd;
     @FXML
     TextField txtSurname;
@@ -55,8 +53,6 @@ public class AllPatientController {
     TextField txtCarelevel;
     @FXML
     TextField txtRoom;
-    @FXML
-    private TextField txtAssets;
 
     private ObservableList<Patient> tableviewContent = FXCollections.observableArrayList();
     private PatientDAO dao;
